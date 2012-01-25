@@ -1,3 +1,13 @@
+/*!
+ * dialog - jQuery Plugin
+ * version: 1.0
+ * @requires jQuery v1.7 or later
+ *
+ * Examples at http://tornqvist.github.com/dialog/
+ *
+ * Copyright 2012 Carl Törnqvist - http://twitter.com/carltornqvist
+ *
+ */
 (function ($, WIN, DOC) {
 	"use strict";
 
