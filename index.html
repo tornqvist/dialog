@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>jQuery modalw</title>
+		<script>
+			/* Modernizr 2.0.6 (Custom Build) | MIT & BSD
+			 * Build: http://www.modernizr.com/download/#-csstransitions-testprop-testallprops-domprefixes
+			 */
+			;window.Modernizr=function(a,b,c){function z(a,b){var c=a.charAt(0).toUpperCase()+a.substr(1),d=(a+" "+m.join(c+" ")+c).split(" ");return y(d,b)}function y(a,b){for(var d in a)if(j[a[d]]!==c)return b=="pfx"?a[d]:!0;return!1}function x(a,b){return!!~(""+a).indexOf(b)}function w(a,b){return typeof a===b}function v(a,b){return u(prefixes.join(a+";")+(b||""))}function u(a){j.cssText=a}var d="2.0.6",e={},f=b.documentElement,g=b.head||b.getElementsByTagName("head")[0],h="modernizr",i=b.createElement(h),j=i.style,k,l=Object.prototype.toString,m="Webkit Moz O ms Khtml".split(" "),n={},o={},p={},q=[],r,s={}.hasOwnProperty,t;!w(s,c)&&!w(s.call,c)?t=function(a,b){return s.call(a,b)}:t=function(a,b){return b in a&&w(a.constructor.prototype[b],c)},n.csstransitions=function(){return z("transitionProperty")};for(var A in n)t(n,A)&&(r=A.toLowerCase(),e[r]=n[A](),q.push((e[r]?"":"no-")+r));u(""),i=k=null,e._version=d,e._domPrefixes=m,e.testProp=function(a){return y([a])},e.testAllProps=z;return e}(this,this.document);
+		</script>
+		<style type="text/css">
+			/* Reset */
+			html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+			abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+			small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, figcaption, figure,  footer, header, hgroup,
+			menu, nav, section, summary, time, mark, audio, video {
+				margin:0;
+				padding:0;
+				border:0;
+				outline:0;
+				font-size:100%;
+				vertical-align:baseline;
+				background:transparent;
+			}
+			article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+				display:block;
+			}
+
+			/* Demo css */
+
+			body {
+				font:1em/1.3em sans-serif;
+				color: #444;
+			}
+
+			p {
+				margin: 1em 0;
+			}
+
+			#triggers {
+				margin: 1rem 0;
+				text-align: center;
+			}
+
+			#scrollmaker {
+				position: relative;
+				width: 0;
+				height: 800px;
+				margin: 0 auto;
+				border-right: 3px dashed #e3e3e3;
+			}
+		</style>
+		<link rel="stylesheet" href="jquery.dialog.css">
+
+	</head>
+
+	<body>
+
+		<div id="scrollmaker"></div>
+
+		<ul id="triggers">
+			<li><a href="#foo">Load large local node</a></li>
+			<li><a href="ajax.html">Load external resource</a></li>
+			<li><a href="ajax.html#bar">Load node in external resource</a></li>
+			<li><a id="pop" href="#bar">Pop variant</a></li>
+			<li><a id="flash" href="#bar">News flash variant</a></li>
+			<li><a id="swing" href="#bar">Swing variant</a></li>
+			<li><a id="fade" href="#bar">Fade variant</a></li>
+		</ul>
+
+		<div id="scrollmaker"></div>
+
+		<div id="foo" style="display:none">
+			<h2>Foo</h2>
+			<input type="text" placeholder="Baziiing!">
+			<p>Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque.</p>
+			<p>Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque.</p>
+			<p>Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque.</p>
+			<p><a id="to-bar" href="#bar">BAAAAAAR!</a></p>
+		</div>
+		<div id="bar" style="display:none;">
+			<h2 id="bar-title">Bar</h2>
+			<p>Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus.</p>
+			<p><a id="to-foo" href="#foo">FOOOOOO!</a></p>
+		</div>
+
+		<script src="//code.jquery.com/jquery-1.7.js"></script>
+		<script src="jquery.dialog.js"></script>
+
+		<script>
+
+			$(function() {
+
+				$('a').dialog();
+
+				$('#pop').dialog({
+					appearence	: null,
+					applyClass	: 'pop'
+				});
+
+				$('#flash').dialog({
+					appearence	: null,
+					applyClass	: 'flash'
+				});
+
+				$('#swing').dialog({
+					appearence	: null,
+					applyClass	: 'swing'
+				});
+
+				$('#fade').dialog({
+					appearence	: null,
+					applyClass	: 'fade'
+				});
+
+			});
+
+		</script>
+
+	</body>
+</html>
