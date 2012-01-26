@@ -4,6 +4,7 @@
  * @requires jQuery v1.7 or later
  *
  * Examples at http://tornqvist.github.com/dialog/
+ * License: http://tornqvist.mit-license.org
  *
  * Copyright 2012 Carl Törnqvist - http://twitter.com/carltornqvist
  *
@@ -461,6 +462,11 @@
 			},
 			destroy: function () {
 				$('#' + prefix + '-container').remove();
+
+				// If close with escape option
+				if ($.data($('#' + prefix)[0], prefix).settings.escape) {
+					$(DOC).off('keydown.' + prefix);
+				}
 			},
 			settings: function (settings) {
 				var before = $.data($('#' + prefix)[0], prefix).settings;
