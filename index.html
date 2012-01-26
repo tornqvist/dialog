@@ -11,10 +11,6 @@
 				font-family: Helvetica, Arial, FreeSans, san-serif;
 				color: #000000;
 			}
-			#container {
-				margin: 0 auto;
-				width: 700px;
-			}
 			h1 { font-size: 3.8em; color: #110f03; margin-bottom: 3px; }
 			h1 .small { font-size: 0.4em; }
 			h1 a { text-decoration: none }
@@ -26,6 +22,13 @@
 			pre { background: #000; color: #fff; padding: 15px;}
 			hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
 			.footer { text-align:center; padding-top:30px; font-style: italic; }
+
+			@media screen and (min-width: 700px){
+				#container {
+					margin: 0 auto;
+					width: 700px;
+				}
+			}
 		</style>
 		<script>
 			/* Modernizr 2.0.6 (Custom Build) | MIT & BSD
@@ -52,7 +55,7 @@
 				<span class="small">by <a href="https://github.com/tornqvist">tornqvist</a></span></h1>
 
 			<div class="description">
-				A responsive, accessible dialog plugin for presenting information and prompting for user action.
+				A responsive, accessible dialog jQuery plugin for presenting information and prompting for user action.
 			</div>
 
 			<h2>Dependencies</h2>
@@ -61,10 +64,12 @@
 
 
 			<h2>Install</h2>
-			<p>Include the dialog script after jQuery as so:
+			<p>Include the dialog css:</p>
+			<pre>&lt;link rel="stylesheet" href="jquery.dialog.css"&gt;</pre>
+			<p>and the dialog script, as so:
 			<pre>&lt;script src="jquery.dialog.min.js"&gt;&lt;/script&gt;</pre>
 
-			<p>Preferably merged with any other plugins/scripts and async or last in the &lt;body&gt;</p>
+			<p>Preferably merged with any other CSS and plugins/scripts.</p>
 
 			<h2>Download</h2>
 			<p>
@@ -76,6 +81,9 @@
 				by running:
 				<pre>$ git clone git://github.com/tornqvist/dialog</pre>
 			</p>
+
+			<h2>More info</h2>
+			<p>Read more on <strong>settings</strong> and <strong>API</strong> on the <a href="https://github.com/tornqvist/dialog/wiki/_pages" title="Get more info on how the plugin works">wiki</a>.
 
 			<h2>Demo</h2>
 			<ul id="triggers">
@@ -112,7 +120,7 @@
 		<script>
 			$(function() {
 
-				$('a').dialog();
+				$('#triggers a').dialog();
 
 				$('#pop').dialog({
 					appearence	: null,

@@ -234,7 +234,7 @@ a.loading: after {
 		opacity: 1;
 	}
 	.fade #dialog.hiding {
-		oopacity: 0;
+		opacity: 0;
 	}
 
 @media screen and (min-width: 700px){
