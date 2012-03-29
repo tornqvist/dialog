@@ -22,18 +22,18 @@
 		defaults = {
 			content		: null,				// Specific content to load into dialog
 			url			: null,				// Specific url to load into dialog, just like any anchor link
-			speed		: 400,				// Animation speed, needs to match that which is set in CSS
+			speed		: 400,				// Animation speed, needs to match that which is set in CSS (only applicable for browsers not supporting transitionend event)
 			escape		: true,				// Whether to hijack the escape key to close dialog (only while dialog is visible)
-			role		: 'dialog',			// The dialogs' role
+			role		: 'dialog',			// The dialogs' role (recommended: dialog/alertdialog)
 			closeText	: 'Dismiss',		// Text in close button
 			loadText	: 'Loading',		// Text to show during loading
 			label		: prefix + '-label',// Dialog title ID, for accessibility
-			appearence	: 'top',			// Direction of dialog animation (open/close)
-			applyClass	: null,				// Custom class to be applied to container
+			appearence	: 'top',			// Direction of dialog animation (accepts: top, bottom, right, left)
+			applyClass	: null,				// Custom class to be applied to container (for styling or animation)
 			onOpen		: $.noop,			// Function to run just when dialog is created (but empty) and availible in the DOM
 			onLoad		: $.noop,			// Function to run when content is loaded and ready
 			onClose		: $.noop,			// Function to run when dialog is closed
-			animType	: typeof Modernizr === 'object' ? Modernizr.csstransitions ? 'css' : 'animate' : 'animate', // Pick animation technique
+			animType	: Modernizr && Modernizr.csstransitions ? 'css' : 'animate', // Pick animation technique
 			visualLoad	: false,			// Whether to show dialog before content is loaded
 			center		: true				// Whether to vertically center dialog in window (if there's room)
 		},
@@ -275,7 +275,7 @@
 
 				case 'hide':
 					plugin[node].removeClass('show');
-					utils.when_done(plugin[node], plugin.settings.speed, function () {
+					utils.when_done(plugin[node], plugin.settings, function () {
 						plugin[node].hide();
 						if ($.type(callback) === 'function') {
 							callback();
@@ -301,7 +301,7 @@
 								left: 0
 							}, plugin.settings.speed);
 
-						utils.when_done(plugin[node], plugin.settings.speed, function () {
+						utils.when_done(plugin[node], plugin.settings, function () {
 							if ($.type(callback) === 'function') {
 								callback();
 							}
@@ -316,7 +316,7 @@
 						plugin.settings.speed
 					).addClass('hiding');
 
-					utils.when_done(plugin[node], plugin.settings.speed, function () {
+					utils.when_done(plugin[node], plugin.settings, function () {
 						plugin[node]
 							.removeClass('show hiding')
 							.hide();
@@ -341,7 +341,7 @@
 						top: animation
 					}, plugin.settings.speed);
 
-					utils.when_done(plugin[node], plugin.settings.speed, function () {
+					utils.when_done(plugin[node], plugin.settings, function () {
 						if ($.type(callback) === 'function') {
 							callback();
 						}
@@ -446,7 +446,7 @@
 					});
 				}
 			},
-			when_done: function ($el, speed, callback) {
+			when_done: function ($el, settings, callback) {
 				var transitionend,
 					vendors = ['webkit', 'ms', 'o', ''];
 
@@ -456,13 +456,18 @@
 					}
 				});
 
-				if (transitionend) {
-					$el.one(transitionend, callback);
-				} else {
-					WIN.setTimeout(function () {
-						callback();
-					}, speed);
-				}
+				utils.when_done = function ($el, settings, callback) {
+
+					if (transitionend && settings.animType === 'css') {
+						$el.one(transitionend, callback);
+					} else {
+						WIN.setTimeout(function () {
+							callback();
+						}, settings.speed);
+					}
+				};
+
+				utils.when_done($el, settings, callback);
 			}
 		},
 		// Public methods
