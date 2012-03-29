@@ -55,6 +55,7 @@
 	background: transparent;
 }
 #dialog-container.show {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABtJREFUeNpiZGBg2MxABGBiIBKMKqSOQoAAAwAtjwDHSk3xyQAAAABJRU5ErkJggg==);
 	background: rgba(0,0,0,.6);
 }
 

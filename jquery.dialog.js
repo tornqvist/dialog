@@ -275,12 +275,12 @@
 
 				case 'hide':
 					plugin[node].removeClass('show');
-					setTimeout(function () {
+					utils.when_done(plugin[node], plugin.settings.speed, function () {
 						plugin[node].hide();
 						if ($.type(callback) === 'function') {
 							callback();
 						}
-					}, plugin.settings.speed);
+					});
 					break;
 
 				case 'align':
@@ -300,11 +300,13 @@
 								top: top,
 								left: 0
 							}, plugin.settings.speed);
-						setTimeout(function () {
+
+						utils.when_done(plugin[node], plugin.settings.speed, function () {
 							if ($.type(callback) === 'function') {
 								callback();
 							}
-						}, plugin.settings.speed);
+						});
+
 					}, 0);
 					break;
 
@@ -313,7 +315,8 @@
 						utils.calc('appearence', plugin, node),
 						plugin.settings.speed
 					).addClass('hiding');
-					setTimeout(function () {
+
+					utils.when_done(plugin[node], plugin.settings.speed, function () {
 						plugin[node]
 							.removeClass('show hiding')
 							.hide();
@@ -322,7 +325,7 @@
 						if ($.type(callback) === 'function') {
 							callback();
 						}
-					}, plugin.settings.speed);
+					});
 					break;
 
 				case 'reveal':
@@ -337,11 +340,12 @@
 					plugin[node][plugin.settings.animType]({
 						top: animation
 					}, plugin.settings.speed);
-					setTimeout(function () {
+
+					utils.when_done(plugin[node], plugin.settings.speed, function () {
 						if ($.type(callback) === 'function') {
 							callback();
 						}
-					}, plugin.settings.speed);
+					});
 				}
 			},
 			calc: function (label, plugin, node) {
@@ -440,6 +444,24 @@
 						'id'	: prefix + '-content',
 						'text'	: plugin.settings.loadText
 					});
+				}
+			},
+			when_done: function ($el, speed, callback) {
+				var transitionend,
+					vendors = ['webkit', 'ms', 'o', ''];
+
+				$.each(vendors, function (i, val) {
+					if (WIN.hasOwnProperty && WIN.hasOwnProperty('on' + val + 'transitionend')) {
+						transitionend = ((val) ? val + "T" : "t") + "ransitionEnd";
+					}
+				});
+
+				if (transitionend) {
+					$el.one(transitionend, callback);
+				} else {
+					WIN.setTimeout(function () {
+						callback();
+					}, speed);
 				}
 			}
 		},
