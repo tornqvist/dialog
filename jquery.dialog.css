@@ -64,7 +64,7 @@ a.loading: after {
 
 /* Variations using the applyClass setting */
 
-	/* Pop: a cheap imitation of the iPhone default alert dialog */
+	/* Pop: a cheap imitation of the iOS default alert dialog */
 	@-webkit-keyframes pop-in {
 		0% { -webkit-transform: scale(.5); }
 		50% { -webkit-transform: scale(1.2); }
@@ -163,7 +163,7 @@ a.loading: after {
 				transition: .4s;
 	}
 
-	/* Swing: 3D swing in to view */
+	/* Swing: 3D swing into view */
 	@-webkit-keyframes swing-in {
 		from { -webkit-transform: perspective(400px) rotate3d(1,0,0,-90deg); }
 		to {-webkit-transform: perspective(400px) rotate3d(0deg); }
@@ -228,6 +228,7 @@ a.loading: after {
 
 	.fade #dialog {
 		opacity: 0;
+		-webkit-transition-property: opacity;
 	}
 
 	.fade #dialog.show {
