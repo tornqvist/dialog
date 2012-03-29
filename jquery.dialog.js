@@ -30,10 +30,11 @@
 			label		: prefix + '-label',// Dialog title ID, for accessibility
 			appearence	: 'top',			// Direction of dialog animation (accepts: top, bottom, right, left)
 			applyClass	: null,				// Custom class to be applied to container (for styling or animation)
+			request		: 'GET',			// Request method used (accepts: 'GET', 'POST', object)
 			onOpen		: $.noop,			// Function to run just when dialog is created (but empty) and availible in the DOM
 			onLoad		: $.noop,			// Function to run when content is loaded and ready
 			onClose		: $.noop,			// Function to run when dialog is closed
-			animType	: Modernizr && Modernizr.csstransitions ? 'css' : 'animate', // Pick animation technique
+			animType	: WIN.Modernizr && WIN.Modernizr.csstransitions ? 'css' : 'animate', // Pick animation technique
 			visualLoad	: false,			// Whether to show dialog before content is loaded
 			center		: true				// Whether to vertically center dialog in window (if there's room)
 		},
@@ -235,8 +236,13 @@
 					// Format url for .load function
 					url = url.indexOf('#') > 0 ? (url.split('#')[0] + ' ' + '#' + url.split('#')[1]) : url;
 
+					// Load function interprets an object as 'POST' method
+					if (plugin.settings.request === 'POST') {
+						plugin.settings.request = {};
+					}
+
 					// .load content
-					plugin.content.load(url, function (data) {
+					plugin.content.load(url, plugin.settings.request, function (data) {
 						setLabel(plugin.content.show());
 						plugin.dialog
 							.removeClass('loading')
