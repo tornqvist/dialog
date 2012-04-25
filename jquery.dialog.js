@@ -13,7 +13,7 @@
 	"use strict";
 
 	/*jslint browser: true */
-	/*global jQuery: true, Modernizr: true, window: true, document: true */
+	/*global jQuery, Modernizr, window, document, console */
 
 	// For easy rebranding
 	var prefix = 'dialog',
@@ -82,7 +82,7 @@
 							}
 						});
 				} else {
-					plugin.container.css('height', $(DOC).height());
+					plugin.container.css('height', utils.calc('space', plugin, 'content'));
 				}
 
 				// If there's no dialog already, create one
@@ -149,8 +149,10 @@
 								winHeight = utils.calc('height'),
 								winWidth = utils.calc('width');
 
+							plugin.container.css('height', utils.calc('space', plugin, 'content'));
+
 							// Detect if dialog is out of view and adjust accordingly
-							if ((scroll < offset || (height < winHeight && scroll > offset)) && scroll > -1) {
+							if ((scroll <= offset || (height < winHeight && scroll > offset)) && scroll > -1) {
 								utils.animate('align', plugin, 'dialog');
 							} else if (((scroll +  winHeight) > (offset + height)) && (height > winHeight) && scroll > -1) {
 								utils.animate(scroll - (height - winHeight), plugin, 'dialog');
@@ -270,13 +272,12 @@
 				switch (animation) {
 
 				case 'show':
-					plugin[node].show();
-					setTimeout(function () {
+					plugin[node].show(function () {
 						plugin[node].addClass('show');
 						if ($.type(callback) === 'function') {
 							callback();
 						}
-					}, 0);
+					});
 					break;
 
 				case 'hide':
@@ -290,17 +291,20 @@
 					break;
 
 				case 'align':
-					plugin[node].show();
-					setTimeout(function () {
+					plugin[node].show(function () {
 						var top,
 							scroll = $(WIN).scrollTop(),
 							nodeHeight = plugin[node].outerHeight(true),
 							winHeight = utils.calc('height');
+
+						plugin.container.css('height', utils.calc('space', plugin, 'content'));
+
 						if ((nodeHeight < winHeight) && plugin.settings.center) {
 							top	= scroll + ((winHeight - nodeHeight) / 2);
 						} else {
 							top = scroll;
 						}
+
 						plugin[node]
 							.addClass('show')[plugin.settings.animType]({
 								top: top,
@@ -312,8 +316,7 @@
 								callback();
 							}
 						});
-
-					}, 0);
+					});
 					break;
 
 				case 'slideOut':
@@ -355,6 +358,10 @@
 				}
 			},
 			calc: function (label, plugin, node) {
+				var pos, scroll, centerOrNot, winHeight,
+					docHeight = $(DOC).height(),
+					nodeHeight = !!plugin ? plugin[node].outerHeight(true) : null;
+
 				switch (label) {
 
 				// return window.inner_width for those who support it - needed for iphone
@@ -367,19 +374,20 @@
 				case 'height':
 					return WIN.innerHeight || $(WIN).height();
 
-				case 'appearence':
+				case 'space':
+					return nodeHeight > docHeight ? 'auto' : docHeight;
 
-					var pos = {},
-						scroll = $(WIN).scrollTop(),
-						nodeHeight = plugin[node].outerHeight(true),
-						winHeight = utils.calc('height'),
-						centerOrNot = function () {
-							if ((nodeHeight < winHeight) && plugin.settings.center) {
-								return scroll + ((winHeight - nodeHeight) / 2);
-							} else {
-								return scroll;
-							}
-						};
+				case 'appearence':
+					pos = {};
+					winHeight = utils.calc('height');
+					scroll = $(WIN).scrollTop();
+					centerOrNot = function () {
+						if ((nodeHeight < winHeight) && plugin.settings.center) {
+							return scroll + ((winHeight - nodeHeight) / 2);
+						} else {
+							return scroll;
+						}
+					};
 
 					switch (plugin.settings.appearence) {
 
@@ -426,10 +434,7 @@
 				case 'container':
 					return $('<div />', {
 						'id'	: prefix + '-container',
-						'class' : plugin.settings.applyClass,
-						'css'	: {
-							height	: $(DOC).height()
-						}
+						'class' : plugin.settings.applyClass
 					});
 
 				case 'dialog':
@@ -462,6 +467,7 @@
 					}
 				});
 
+				// Replace self once we have figured out what method to use
 				utils.when_done = function ($el, settings, callback) {
 
 					if (transitionend && settings.animType === 'css') {

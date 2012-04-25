@@ -263,11 +263,11 @@ a.loading: after {
 	}
 
 	#dialog-container {
-		-webkit-transition: .4s;
-		   -moz-transition: .4s;
-			-ms-transition: .4s;
-			 -o-transition: .4s;
-				transition: .4s;
+		-webkit-transition: background .4s;
+		   -moz-transition: background .4s;
+			-ms-transition: background .4s;
+			 -o-transition: background .4s;
+				transition: background .4s;
 	}
 }
 
@@ -279,13 +279,6 @@ a.loading: after {
 
 	#dialog-close {
 		left: auto;
-	}
-	#dialog-container.show {
-		-webkit-transition: .4s;
-		   -moz-transition: .4s;
-			-ms-transition: .4s;
-			 -o-transition: .4s;
-				transition: .4s;
 	}
 }
 
