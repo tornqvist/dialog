@@ -473,9 +473,7 @@
 					if (transitionend && settings.animType === 'css') {
 						$el.one(transitionend, callback);
 					} else {
-						WIN.setTimeout(function () {
-							callback();
-						}, settings.speed);
+						WIN.setTimeout(callback, settings.speed);
 					}
 				};
 
